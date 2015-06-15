@@ -19,6 +19,12 @@ class WelcomeController extends Controller
         return view('welcome');
     }
 
+    public function exemplo()
+    {
+        $nome = "Ricardo";
+        $sobrenome = "Tássio";
+        return view('exemplo',compact('nome','sobrenome'));
+    }
     /**
      * Show the form for creating a new resource.
      *
