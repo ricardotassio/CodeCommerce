@@ -10,7 +10,7 @@
             </ul>
         @endif
 
-        {!! Form::open(['url'=>'products']) !!}
+        {!! Form::open(['url'=>'admin/products']) !!}
         <div class="form-group">
             {!! Form::label('name', 'Name:') !!}
             {!! Form::text('name',null,['class'=>'form-control']) !!}
