@@ -1,6 +1,6 @@
 @extends('./app')
 @section('content')
-
+    <div class="container">
     <h1>Products</h1>
     <br/><br/>
     <a href="{{route('products.create')}}" class="btn btn-primary">New Product</a>
@@ -11,6 +11,7 @@
             <th>Name</th>
             <th>Description</th>
             <th>Price</th>
+            <th>Category</th>
             <th>Featured</th>
             <th>Recommended</th>
             <th>Action</th>
@@ -21,6 +22,7 @@
                 <td>{{ $product->name }}</td>
                 <td>{{ $product->description }}</td>
                 <td>{{ $product->price }}</td>
+                <td>{{ $product->category->name }}</td>
                 <td>{{ ($product->featured?'Yes':'No') }}</td>
                 <td>{{ ($product->recommend?'Yes':'No') }}</td>
                 <td>
@@ -30,5 +32,6 @@
             </tr>
     @endforeach
     </table>
-
+        {!! $products->render() !!}
+</div>
 @endsection

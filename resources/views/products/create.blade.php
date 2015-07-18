@@ -16,6 +16,10 @@
             {!! Form::text('name',null,['class'=>'form-control']) !!}
         </div>
         <div class="form-group">
+            {!! Form::label('category', 'Category:') !!}
+            {!! Form::select('category_id',$categories, null, ['class'=>'form-control']) !!}
+        </div>
+        <div class="form-group">
             {!! Form::label('description', 'Description:') !!}
             {!! Form::textarea('description',null,['class'=>'form-control']) !!}
         </div>
