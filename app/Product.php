@@ -4,7 +4,7 @@ namespace CodeCommerce;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Products extends Model
+class Product extends Model
 {
     protected $fillable = [
         'category_id',
@@ -14,6 +14,11 @@ class Products extends Model
         'featured',
         'recommend'
     ];
+
+    public function images()
+    {
+        return $this->hasMany('CodeCommerce\ProductImage');
+    }
 
     public function category()
     {

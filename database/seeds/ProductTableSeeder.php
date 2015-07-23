@@ -2,7 +2,7 @@
 
 use Illuminate\Database\Seeder;
 use Illuminate\Database\Eloquent;
-use CodeCommerce\Products;
+use CodeCommerce\Product;
 
 
 class ProductTableSeeder extends Seeder
@@ -16,7 +16,7 @@ class ProductTableSeeder extends Seeder
     {
         DB::table('products')->truncate();
 
-        factory('CodeCommerce\Products',10)->create();
+        factory('CodeCommerce\Product',10)->create();
 
     }
 }

@@ -3,7 +3,7 @@
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateProductsTable extends Migration
+class CreateProductImagesTable extends Migration
 {
     /**
      * Run the migrations.
@@ -12,15 +12,13 @@ class CreateProductsTable extends Migration
      */
     public function up()
     {
-        Schema::create('products',function(Blueprint $table)
-        {
+        Schema::create('product_images',function(Blueprint $table){
             $table->increments('id');
-            $table->string('name',80);
-            $table->text('description');
-            $table->decimal('price');
-            $table->boolean('featured')->default(0);
-            $table->boolean('recommend')->default(0);
+            $table->integer('product_id')->unsigned();
+            $table->foreign('product_id')->references('id')->on('products')->onDelete('cascade');
+            $table->string('extension',5);
             $table->timestamps();
+
         });
     }
 
@@ -31,8 +29,6 @@ class CreateProductsTable extends Migration
      */
     public function down()
     {
-        Schema::drop('products');
+        Schema::drop('product_images');
     }
 }
-
-

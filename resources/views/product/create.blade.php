@@ -10,31 +10,31 @@
             </ul>
         @endif
 
-        {!! Form::open(['route'=>['products.update',$products->id],'method'=>'put']) !!}
+        {!! Form::open(['url'=>'admin/product', 'method'=>'post']) !!}
         <div class="form-group">
             {!! Form::label('name', 'Name:') !!}
-            {!! Form::text('name',$products->name,['class'=>'form-control']) !!}
+            {!! Form::text('name',null,['class'=>'form-control']) !!}
         </div>
         <div class="form-group">
             {!! Form::label('category', 'Category:') !!}
-            {!! Form::select('category_id',$categories, $products->category->id,['class'=>'form-control']) !!}
+            {!! Form::select('category_id',$categories, null, ['class'=>'form-control']) !!}
         </div>
         <div class="form-group">
             {!! Form::label('description', 'Description:') !!}
-            {!! Form::textarea('description',$products->description,['class'=>'form-control']) !!}
+            {!! Form::textarea('description',null,['class'=>'form-control']) !!}
         </div>
         <div class="form-group">
             {!! Form::label('price', 'Price:') !!}
-            {!! Form::text('price',$products->price,['class'=>'form-control']) !!}
+            {!! Form::text('price',null,['class'=>'form-control']) !!}
         </div>
         <div class="form-group">
             {!! Form::label('featured', 'Featured:') !!}
-            {!! Form::checkbox('featured',1,($products->featured?true:false)) !!}
+            {!! Form::checkbox('featured',1,false) !!}
         </div>
         <div class="form-group">
             {!! Form::label('recommend', 'Recommend?') !!}<br/>
-            {!! Form::radio('recommend',1,($products->featured?true:false),['class'=>'field']) !!} Yes
-            {!! Form::radio('recommend',0,($products->featured?true:false),['class'=>'field']) !!} No
+            {!! Form::radio('recommend',1,false,['class'=>'field']) !!} Yes
+            {!! Form::radio('recommend',0,false,['class'=>'field']) !!} No
         </div>
         <div class="form-group">
             {!! Form::submit('Add Category',['class'=>'btn btn-primary']) !!}

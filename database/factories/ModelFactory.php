@@ -27,7 +27,7 @@ $factory->define(CodeCommerce\Category::class, function($faker) {
     ];
 });
 
-$factory->define(CodeCommerce\Products::class, function($faker) {
+$factory->define(CodeCommerce\Product::class, function($faker) {
     return [
         'name'=>$faker->name,
         'description'=>$faker->sentence(),
