@@ -16,7 +16,7 @@ use Illuminate\Support\Facades\File;
 class AdminProductController extends Controller
 {
     private $productModel;
-    // private $storage = ['disk'=>'s3','url'=>'S3_IMAGE_URL'];
+    //private $storage = ['disk'=>'s3','url'=>'S3_IMAGE_URL'];
     private $storage = ['disk'=>'public_local','url'=>'APP_IMAGE_URL'];
 
 
