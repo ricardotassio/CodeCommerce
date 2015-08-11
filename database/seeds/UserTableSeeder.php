@@ -2,7 +2,7 @@
 
 use Illuminate\Database\Seeder;
 use Illuminate\Database\Eloquent;
-use CodeCommerce\User;
+use CodeCommerce\Entities\User;
 
 
 class UserTableSeeder extends Seeder
@@ -18,7 +18,7 @@ class UserTableSeeder extends Seeder
 
 
 
-        factory('CodeCommerce\User')->create([
+        factory('CodeCommerce\Entities\User')->create([
             'name'=>'Ricrado Tássio',
             'email'=>'ricardotassio@gmail.com',
             'password'=>Hash::make('123456')

@@ -137,14 +137,16 @@ return [
         Illuminate\Validation\ValidationServiceProvider::class,
         Illuminate\View\ViewServiceProvider::class,
         Illuminate\Html\HtmlServiceProvider::class,
-
+        Prettus\Repository\Providers\RepositoryServiceProvider::class,
         /*
          * Application Service Providers...
          */
         CodeCommerce\Providers\AppServiceProvider::class,
         CodeCommerce\Providers\EventServiceProvider::class,
         CodeCommerce\Providers\RouteServiceProvider::class,
-
+        CodeCommerce\Providers\CodeCommerceRepositoryProvider::class,
+        CodeCommerce\Providers\CodeCommerceServiceProvider::class,
+        CodeCommerce\Providers\CodeCommercerModelProvider::class,
     ],
 
     /*

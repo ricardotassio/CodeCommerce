@@ -1,6 +1,6 @@
 <?php
 
-namespace CodeCommerce;
+namespace CodeCommerce\Entities;
 
 use Illuminate\Database\Eloquent\Model;
 

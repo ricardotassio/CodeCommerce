@@ -2,101 +2,104 @@
 
 namespace CodeCommerce\Http\Controllers;
 
-
-use CodeCommerce\ProductImage;
-use CodeCommerce\Product;
-use CodeCommerce\Category;
-use Illuminate\Http\Request;
-
 use CodeCommerce\Http\Requests;
-use CodeCommerce\Http\Controllers\Controller;
+use CodeCommerce\Repositories\Category\CategoryRepositoryInterface;
+use CodeCommerce\Repositories\Product\ProductRepositoryInterface;
+use CodeCommerce\Repositories\ProductImage\ProductImageRepositoryInterface;
+use CodeCommerce\Services\Product\Contracts\ProductImageServiceInterface;
+use CodeCommerce\Services\Product\Contracts\ProductServiceInterface;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
-use Illuminate\Support\Facades\File;
+
 
 class AdminProductController extends Controller
 {
-    private $productModel;
-    //private $storage = ['disk'=>'s3','url'=>'S3_IMAGE_URL'];
+    private $productRepository;
+
     private $storage = ['disk'=>'public_local','url'=>'APP_IMAGE_URL'];
+    private $categoryRepository;
+    private $productImageRepository;
+    private $serviceImage;
+    private $serviceProduct;
 
-
-    public function __construct(Product $productModel)
+    public function __construct( ProductRepositoryInterface $productRepository,
+                                 CategoryRepositoryInterface $categoryRepository,
+                                 ProductImageRepositoryInterface $productImageRepository,
+                                 ProductImageServiceInterface $serviceImage,
+                                 ProductServiceInterface $serviceProduct)
     {
-        $this->productModel = $productModel;
+        $this->productRepository      = $productRepository;
+        $this->categoryRepository     = $categoryRepository;
+        $this->productImageRepository = $productImageRepository;
+        $this->serviceImage           = $serviceImage;
+        $this->serviceProduct         = $serviceProduct;
+
     }
 
     public function index()
     {
-        $products = $this->productModel->paginate(10);
-        return view('product.index',compact('products'));
+        $products = $this->serviceProduct->index();
+
+        return view( 'product.index',compact( 'products'));
     }
 
-    public function create(Category $category)
+    public function create()
     {
-        $categories = $category->lists('name','id');
-        return view('product.create',compact('categories'));
+        $categories =  $this->categoryRepository->lists('name','id')->all();
+        return view( 'product.create', compact('categories'));
     }
 
-    public function store(Requests\ProductImageRequest $request)
+    public function store( Requests\ProductImageRequest $request)
     {
-        $input = $request->all();
-        $product = $this->productModel->fill($input);
-        $product->save();
-        return redirect()->route('product.index');
+        $this->serviceProduct->store( $request);
+        return redirect()->route( 'product.index');
     }
 
-    public function destroy($id)
+    public function destroy( $productId)
     {
-        $this->productModel->find($id)->delete();
-        return redirect()->route('product.index');
+        $this->serviceProduct->destroy( $productId);
+        $this->productRepository->find( $productId)->delete();
+        return redirect()->route( 'product.index');
     }
 
-    public function edit($id, Category $category)
+    public function edit( $id)
     {
-        $categories = $category->lists('name','id');
-        $product = $this->productModel->find($id);
-        return view('product.edit',compact('product','categories'));
-
+        $categories =  $this->categoryRepository->lists( 'name','id');
+        $product = $this->productRepository->find($id);
+        return view('product.edit',compact( 'product','categories'));
     }
 
-    public function update(Requests\ProductRequest $request, $id)
+    public function update( Requests\ProductRequest $request, $id)
     {
-        $product = $this->productModel->find($id)->update($request->all());
-        return redirect()->route('product.index');
+        $product = $this->productRepository->find( $id)->update( $request->all());
+        return redirect()->route( 'product.index');
     }
 
-    public function images($id)
+    public function images( $id)
     {
-        $product = $this->productModel->find($id);
-        $url = env($this->storage['url']);
-        return view('product.images',compact('product','url'));
+        $product = $this->productRepository->find( $id);
+        //$url = env( $this->storage['url'],'uploads/');
+        $url = 'uploads/';
+        return view( 'product.images', compact( 'product', 'url'));
     }
 
     public function createImage($id)
     {
-        $product = $this->productModel->find($id);
+        $product = $this->productRepository->find($id);
         return view('product.createImage',compact('product'));
     }
 
-    public function storeImage(Request $request, $id, ProductImage $productImage)
+    public function storeImage(Request $request, $id, ProductImageRepositoryInterface $productImage)
     {
-        $file = $request->file('image');
-        $extension = $file->getClientOriginalExtension();
-        $image = $productImage::create(['product_id'=>$id, 'extension'=>$extension]);
-        Storage::disk($this->storage['disk'])->put($image->id.'.'.$extension, File::get($file));
+        $this->serviceImage->create( $request, $id, $productImage);
         return redirect()->route('product.images',['id'=>$id]);
     }
 
-    public function destroyImage(ProductImage $productImage, $id)
+    public function destroyImage( $id)
     {
-        $image = $productImage->find($id);
-        $product = $image->product;
-
-        if(Storage::disk($this->storage['disk'])->exists($image->id.'.'.$image->extension)) {
-            Storage::disk($this->storage['disk'])->delete($image->id.'.'.$image->extension);
-        }
-
-        $image->delete();
-        return redirect()->route('product.images',['id'=>$product->id]);
+        $product = $this->serviceImage->destroy( $id);
+        return redirect()->route( 'product.images',['id'=>$product->id]);
     }
+
+
 }

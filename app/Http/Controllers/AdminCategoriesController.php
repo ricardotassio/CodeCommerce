@@ -2,23 +2,23 @@
 
 namespace CodeCommerce\Http\Controllers;
 
-use CodeCommerce\Category;
-use Illuminate\Http\Request;
 
+use CodeCommerce\Repositories\Category\CategoryRepositoryInterface;
+use Illuminate\Http\Request;
 use CodeCommerce\Http\Requests;
 use CodeCommerce\Http\Controllers\Controller;
 
 class AdminCategoriesController extends Controller
 {
-    private $categoryModel;
+    private  $categoryRepository;
 
-    public function __construct(Category $categoryModel)
+    public function __construct( CategoryRepositoryInterface $categoryRepository)
     {
-        $this->categoryModel = $categoryModel;
+        $this->categoryRepository = $categoryRepository;
     }
     public function index()
     {
-        $categories = $this->categoryModel->paginate(10);
+        $categories =  $this->categoryRepository->paginate(10);
         return view("categories.index",compact('categories'));
     }
 
@@ -30,26 +30,26 @@ class AdminCategoriesController extends Controller
     public function store(Requests\CategoryRequest $request)
     {
         $input = $request->all();
-        $category = $this->categoryModel->fill($input);
+        $category = $this->categoryRepository->fill($input);
         $category->save();
         return redirect()->route('categories.index');
     }
 
     public function destroy($id)
     {
-        $this->categoryModel->find($id)->delete();
+        $this->categoryRepository->find($id)->delete();
         return redirect()->route('categories.index');
     }
 
     public function edit($id)
     {
-        $category = $this->categoryModel->find($id);
+        $category = $this->categoryRepository->find($id);
         return view('categories.edit',compact('category'));
     }
 
     public function update(Requests\CategoryRequest $request, $id)
     {
-        $category = $this->categoryModel->find($id)->update($request->all());
+        $category = $this->categoryRepository->find($id)->update($request->all());
         return redirect()->route('categories.index');
     }
 }

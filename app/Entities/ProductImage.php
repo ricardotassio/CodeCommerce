@@ -1,7 +1,8 @@
 <?php
 
-namespace CodeCommerce;
+namespace CodeCommerce\Entities;
 
+use CodeCommerce\Entities\Contracts\ProductImagesModelInterface;
 use Illuminate\Database\Eloquent\Model;
 
 class ProductImage extends Model
@@ -14,11 +15,8 @@ class ProductImage extends Model
 
     public function product()
     {
-           return $this->belongsTo('CodeCommerce\Product');
+           return $this->belongsTo('CodeCommerce\Entities\Product');
     }
 
-    public function prd()
-    {
-        return $this->belongsTo('CodeCommerce\Product');
-    }
+
 }
